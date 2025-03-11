@@ -1,0 +1,28 @@
+[
+    {
+      "path": "images/skinCond3.jpg",
+      "description": "This lady, in her mid-20s, has a slowly spreading plaque on her forehead. Her general health is good. Biopsy has excluded malignancy, it shows hyperkeratosis, follicular plugging, basal keratinocytes degeneration, and a dense perivascular chronic inflammatory infiltrate.",
+      "diagnosis": "Discoid lupus erythematosus"
+    },
+    {
+      "path": "images/skinCond2.jpg",
+      "description": "A 52-year-old lady with a long history of psoriasis has recently noted that a fingernail has turned black. She takes warfarin for a thrombophilic disorder.",
+      "diagnosis": "Pseudomonas colonisation"
+    },
+    {
+        "path": "images/skinCond1.jpg",
+        "description": "A 50-year-old farmer has developed a rash on the back of his left hand. He initially applied an udder cream that he uses on his dairy cows, but this was unhelpful. He was given a steroid cream by another farmer which is hindering rather than helping.",
+        "diagnosis": "tinea incognito"
+      },
+    {
+        "path": "images/skinCond4.jpg",
+        "description": "This 46-year-old man has itchy lesions symmetrically on his elbows and knees, sacrum, scalp, and beard area. The lesions started six months ago and topical steroids have been of little help in reducing the itch. There is a family history of atopic eczema, although he has never had any atopic symptoms. Routine blood tests (ie, full blood count, renal and liver function) are all normal.",
+        "diagnosis": "Dermatitis herpetiformis"
+      },
+    {
+        "path": "images/skinCond5.jpg",
+        "description": "This 58-year-old man has developed thick purple/red tight skin on his upper back, over the last three months. He is otherwise well and does not take any medication. In particular, he has not had symptoms of Raynaud phenomenon.",
+        "diagnosis": "scleroedema"
+      }
+  ]
+  
