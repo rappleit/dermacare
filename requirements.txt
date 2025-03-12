@@ -1,4 +1,0 @@
-openai
-chromadb
-llama-index
-open-clip-torch

@@ -1,2 +1,5 @@
 .env
 dermacare-backend/my_db/chroma.sqlite3
+.kaggle/Kaggle Settings.json
+diagnosis_mapping.json
+image_data.json
