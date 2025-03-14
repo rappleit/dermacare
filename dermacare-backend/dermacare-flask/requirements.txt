@@ -1,0 +1,13 @@
+flask
+python-dotenv
+pillow
+openai
+langchain-experimental
+langchain-iris
+langchain
+fastembed
+werkzeug
+gunicorn
+flask-cors
+langchain-iris
+open_clip_torch

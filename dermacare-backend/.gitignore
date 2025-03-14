@@ -6,3 +6,4 @@ venv/
 iris-env/
 /demo/.ipynb_checkpoints/
 .venv
+/dermnet_data
