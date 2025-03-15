@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import os
 from dotenv import load_dotenv
 from utils.db_utils import init_db, query_db_with_image_and_text, combine_text
@@ -8,6 +9,7 @@ import traceback
 print("Starting Flask application...")
 
 app = Flask(__name__)
+CORS(app)
 
 print("Loading environment variables...")
 load_dotenv()
