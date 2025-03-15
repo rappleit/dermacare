@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import {
   Card,
   Upload,
@@ -10,46 +10,21 @@ import {
   Button,
   Space,
   Typography,
-  Divider,
   message,
 } from "antd";
 import {
-  InboxOutlined,
-  SaveOutlined,
-  UserOutlined,
   CameraOutlined,
+  UserOutlined,
   ProfileOutlined,
+  MedicineBoxOutlined,
 } from "@ant-design/icons";
 
-const { Title, Text, Paragraph } = Typography;
-const { TextArea } = Input;
+const { Title, Text } = Typography;
 const { Option } = Select;
 
-const InputSection = () => {
+const InputSection = ({ fileList, onUploadChange, onFormSubmit }) => {
   const [form] = Form.useForm();
-  const [fileList, setFileList] = useState([]);
-  const [previewImage, setPreviewImage] = useState("");
-  const [previewVisible, setPreviewVisible] = useState(false);
 
-  const normFile = (e) => {
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e?.fileList;
-  };
-
-  const handleUploadChange = ({ fileList }) => {
-    // Limit to 3 images
-    const limitedFileList = fileList.slice(0, 3);
-    setFileList(limitedFileList);
-  };
-
-  const onFinish = (values) => {
-    console.log("Form values:", { ...values, skinImages: fileList });
-    message.success("Skin condition assessment submitted successfully!");
-  };
-
-  // Validate file type and size
   const beforeUpload = (file) => {
     const isImage = file.type.startsWith("image/");
     if (!isImage) {
@@ -65,7 +40,7 @@ const InputSection = () => {
   };
 
   return (
-    <div className="max-w-xl flex flex-col gap-4">
+    <div className="w-lg max-w-lg flex flex-col gap-4">
       {/* Skin Condition Image Upload Card */}
       <Card
         title={
@@ -73,16 +48,13 @@ const InputSection = () => {
             <CameraOutlined /> Skin Condition Images
           </Title>
         }
-        extra={
-          <Text type="secondary">Upload clear images of the affected area</Text>
-        }
+        
       >
-
         <Upload.Dragger
           name="skinConditionImages"
           multiple
           fileList={fileList}
-          onChange={handleUploadChange}
+          onChange={onUploadChange}
           listType="picture-card"
           beforeUpload={beforeUpload}
           accept="image/*"
@@ -102,6 +74,7 @@ const InputSection = () => {
 
       {/* Skin Condition History Form Card */}
       <Card
+        className="w-lg"
         title={
           <Title level={4}>
             <ProfileOutlined /> Patient History
@@ -112,31 +85,9 @@ const InputSection = () => {
         <Form
           form={form}
           layout="vertical"
-          onFinish={onFinish}
+          onFinish={onFormSubmit}
           scrollToFirstError
         >
-          {/* Personal Information */}
-          <Title level={5}>Personal Information</Title>
-          <Space direction="horizontal" size={8} className="flex">
-            <Form.Item
-              name="name"
-              label="Name"
-              rules={[{ required: true, message: "Please enter name" }]}
-              className="flex-1"
-            >
-              <Input prefix={<UserOutlined />} placeholder="Name" />
-            </Form.Item>
-
-            <Form.Item
-              name="nric"
-              label="NRIC"
-              rules={[{ required: true, message: "Please enter NRIC" }]}
-              className="flex-1"
-            >
-              <Input placeholder="NRIC" />
-            </Form.Item>
-          </Space>
-
           <Space direction="horizontal" size={8} className="flex mb-2">
             <Form.Item
               name="dateOfBirth"
@@ -156,16 +107,16 @@ const InputSection = () => {
               className="flex-1"
             >
               <Select placeholder="Select gender">
-                <Option value="male">Male</Option>
-                <Option value="female">Female</Option>
-                <Option value="other">Other</Option>
-                <Option value="prefer-not-to-say">Prefer not to say</Option>
+                <Option value="Male">Male</Option>
+                <Option value="Female">Female</Option>
+                <Option value="Other">Other</Option>
+                <Option value="Prefer Not To Say">Prefer not to say</Option>
               </Select>
             </Form.Item>
             <Form.Item
               name="race"
               label="Race"
-              rules={[{ required: true, message: "Please enter race" }]}
+              rules={[{  message: "Please enter race" }]}
               className="mb-2"
             >
               <Input placeholder="Race" />
@@ -265,10 +216,9 @@ const InputSection = () => {
             <Button
               type="primary"
               htmlType="submit"
-              icon={<SaveOutlined />}
               size="large"
             >
-              Submit Skin Condition Assessment
+              Submit and Generate
             </Button>
           </Form.Item>
         </Form>
