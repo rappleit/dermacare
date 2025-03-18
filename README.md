@@ -31,13 +31,13 @@ This streamlined workflow helps reduce unnecessary referrals while ensuring pati
 #### InterSystems Overview
     .
     ├── ..             
-    ├── dermacare-backend                   # Where the InterSystems IRIS Vector Search magic happens
+    ├── dermacare-backend      # Where the InterSystems IRIS Vector Search magic happens
     │   ├── demo
     │   ├──   ├── ..               
-    │   ├──   └── setup.ipynb               # 1. Set up the persistent IRIS VectorDB with 2gb Dermnet dataset (20,000 images)   
+    │   ├──   └── setup.ipynb  # 1. Set up the persistent IRIS VectorDB with 2gb Dermnet dataset (20,000 images)   
     │   ├── dermacare-flask
     │   ├──   ├── ..               
-    │   ├──   └── app.py                    # 2. Query the existing IRIS VectorDB to conduct image vector search 
+    │   ├──   └── app.py       # 2. Query the existing IRIS VectorDB to conduct image vector search 
     └── dermacare-frontend
 
 #### How InterSystems IRIS Vector Search was used
