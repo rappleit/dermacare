@@ -8,20 +8,21 @@ import time
 import sys
 
 def check_requirements():
-    """Check if all requirements are met before starting setup"""
     errors = []
+      
+    # Check for OpenAI API key
+    if not os.environ.get("OPENAI_API_KEY"):
+        errors.append("ERROR: OPENAI_API_KEY environment variable not found")
     
-    # Check for .env file and required variables
-  
-    # Check for data directory
-    dataset_path = "../data/dermnet_data"
-    if not os.path.exists(dataset_path):
-        errors.append(f"ERROR: Dataset directory not found at {dataset_path}")
+    # Check for Kaggle API credentials
+    kaggle_path = os.path.join(os.getcwd(), ".kaggle", "kaggle.json")
+    if not os.path.exists(kaggle_path):
+        errors.append(f"ERROR: Kaggle credentials not found at {kaggle_path}")
     
+            
     # Check IRIS connection
     try:
         hostname = os.getenv('IRIS_HOSTNAME', 'localhost')
-        # Simple connection test (you might want to adjust this based on your IRIS setup)
         import socket
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         result = sock.connect_ex((hostname, 1972))
@@ -75,6 +76,11 @@ def create_documents_from_images(root_dir):
     
     return docs, errors, skipped
 
+def batch(iterable, n=1):
+    """Yield successive n-sized batches from iterable."""
+    for i in range(0, len(iterable), n):
+         yield iterable[i:i + n]
+
 def main():
     print("Starting setup process...")
     
@@ -89,8 +95,19 @@ def main():
     # Load environment variables
     load_dotenv()
     
-    # Use local dataset path
-    dataset_path = "../data/dermnet_data"
+    # Download the dataset from Kaggle
+    print("\nDownloading dataset from Kaggle...")
+    try:
+        import kagglehub
+        dataset_path = kagglehub.dataset_download("shubhamgoel27/dermnet")
+        print("Dataset downloaded to:", dataset_path)
+    except Exception as e:
+        print(f"Error downloading dataset: {str(e)}")
+        print("Attempting to use local dataset path...")
+        dataset_path = "../data/dermnet_data"
+        if not os.path.exists(dataset_path):
+            print(f"ERROR: Local dataset not found at {dataset_path}")
+            sys.exit(1)
     
     try:
         # Create documents from images
@@ -115,7 +132,7 @@ def main():
         try:
             print("Loading OpenCLIP model (this may take a few minutes)...")
             multimodal_ef = OpenCLIPEmbeddings(
-                model_name="ViT-B-32",  # Using a smaller model first
+                model_name="ViT-B-32",  
                 checkpoint="laion2b_s34b_b79k"
             )
             print("OpenCLIP model loaded successfully!")
@@ -142,12 +159,22 @@ def main():
         start = time.time()
         
         try:
-            db = IRISVector.from_documents(
-                embedding=multimodal_ef,
-                documents=docs,
-                collection_name=COLLECTION_NAME,
-                connection_string=CONNECTION_STRING,
-            )
+            batch_size = 1000
+
+            for i, batch_docs in enumerate(batch(docs, batch_size)):
+                print(f"Processing batch {i+1} with {len(batch_docs)} documents...")
+                if i == 0:
+                    # Create the store for the first batch
+                    db = IRISVector.from_documents(
+                        embedding=multimodal_ef,
+                        documents=batch_docs,
+                        collection_name=COLLECTION_NAME,
+                        connection_string=CONNECTION_STRING,
+                    )
+                else:
+                    # For subsequent batches, add documents to the existing store
+                    db.add_documents(batch_docs)
+                print(f"Batch {i+1} processed.")
             
             elapsed = time.time() - start
             ids = db.get().get("ids", [])

@@ -32,13 +32,59 @@ This streamlined workflow helps reduce unnecessary referrals while ensuring pati
     .
     ├── ..             
     ├── dermacare-backend      # Where the InterSystems IRIS Vector Search magic happens
-    │   ├── demo
+    │   ├── notebooks
     │   ├──   ├── ..               
     │   ├──   └── setup.ipynb  # 1. Set up the persistent IRIS VectorDB with 2gb Dermnet dataset (20,000 images)   
     │   ├── dermacare-flask
     │   ├──   ├── ..               
     │   ├──   └── app.py       # 2. Query the existing IRIS VectorDB to conduct image vector search 
     └── dermacare-frontend
+
+#### Setup
+1. Open Docker
+2. cd into `dermacare-backend`
+3. Run the following command:
+
+``` 
+docker run -d --name iris-comm -p 1972:1972 -p 52773:52773 -e IRIS_PASSWORD=demo -e IRIS_USERNAME=demo intersystemsdc/iris-community:latest
+```
+
+4. Create a Python virtual environment
+
+```
+python -m venv iris-env
+```
+
+5. Run the Python virtual environemtn
+
+```
+.\iris-env\Scripts\Activate
+```
+
+6. Install dependencies
+
+```
+pip install -r requirements.txt
+```
+
+```
+pip install ./install/intersystems_irispython-5.0.1-8026-cp38.cp39.cp310.cp311.cp312-cp38.cp39.cp310.cp311.cp312-win_amd64.whl
+```
+
+7. Run the jupyter notebook for setup
+`jupyter notebook`
+
+8. Follow the instrunctions in `notebooks/setup.ipynb`
+
+9. cd into `dermcare-flask`
+
+10. Create a `.env` file using the `.env.example` file. Fill in your OpenAI API Key
+
+11. Run the app.py file
+```
+python3 app.py
+```
+
 
 #### How InterSystems IRIS Vector Search was used
 1. First, we embedded 20,000 curated DermNet images in the IRIS Vector Database (VectorDB). This persistent VectorDB can be used to be queried subsequently.
